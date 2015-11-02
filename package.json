@@ -1,0 +1,34 @@
+{
+  "name": "molenblog",
+  "version": "0.0.0",
+  "description": "molen's blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "no test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github_molen:molenlee/molenblog.git"
+  },
+  "keywords": [
+    "blog",
+    "molen"
+  ],
+  "dependencies": {
+    "koa": "1.0.0",
+    "redis": "0.12.1",
+    "bootstrap": "3.3.5",
+    "less": "2.5.1",
+    "react": "0.13.3",
+    "requirejs": "2.1.20",
+    "jquery": "2.1.4",
+    "koa-trie-router": "1.0.10",
+    "koa-body-parsers": "^1.1.0",
+    "koa-file-server": "2",
+    "koa-redis-pool":"0.3.1",
+    "monk": "1.0.1",
+    "co-monk": "1.0.0"
+  },
+  "author": "molen",
+  "license": "ISC"
+}
