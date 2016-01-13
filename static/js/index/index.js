@@ -1,7 +1,7 @@
 require.config({
 	paths: {
-		'jquery': '../jQuery/jQuery',
-		'CanvasBanner':'../plugin/CanvasBanner'
+		'jquery': '/lib/jQuery/jQuery',
+		'CanvasBanner':'/js/plugin/CanvasBanner'
 	}
 });
 
