@@ -9,7 +9,7 @@ var staticServer = require('koa-file-server');
 var mywebsocket = require('./feature/socket')
 
 var app = koa();
-port = 8080;
+port = 80;
 //打印路径
 app.use(function *(next){
   var start = new Date();
