@@ -11,12 +11,12 @@ module.exports = function(server){
 	var code = io.of(nsp);
 
 	rooms = {
-		'0001': {
-			'id': '0001',
-			'name': '测试名称',
-			'title': '测试标题',
-			'desc' :'测试描述'
-		}
+		// '0001': {
+		// 	'id': '0001',
+		// 	'name': '测试名称',
+		// 	'title': '测试标题',
+		// 	'desc' :'测试描述'
+		// }
 	};
 
 
@@ -36,7 +36,7 @@ module.exports = function(server){
 						socket.broadcast.to(key).emit('setRoomNumber', res.length);
 					}
 				}
-			}, 0)
+			}, 1000)
 		})
 
 
@@ -55,12 +55,20 @@ module.exports = function(server){
 
 		socket.on('joinRoom', function(data, fn){
 			for(var key in rooms){
-				if (key == data)
+				console.info('1')
+				if (key == data){
+					console.info('2')
 					continue;
-				socket.leave(key, function(){
-					checkSingleRomm(key);
-					socket.broadcast.to(data).emit('setRoomNumber', findClientsSocket(key, nsp).length);
-				});
+				}
+				console.info(3)
+				void function(key){
+					socket.leave(key, function(){
+						console.info('need check key is ' + key)
+						checkSingleRomm(key);
+						socket.broadcast.to(key).emit('setRoomNumber', findClientsSocket(key, nsp).length);
+					});
+				}(key)
+				
 			}
 
 			socket.join(data, function(){
@@ -91,6 +99,7 @@ module.exports = function(server){
 		});
 
 		function checkSingleRomm(roomID){
+			console.info('roomID is ' + roomID)
 			var res = findClientsSocket(roomID, nsp);
 			if (res.length == 0){
 				delete rooms[roomID];

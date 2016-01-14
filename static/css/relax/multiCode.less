@@ -14,21 +14,24 @@ a{
 		width: 100%;
 		border-collapse:collapse;  
 		border-spacing:0; 
-
+		border: 1px solid #ccc;
 		thead {
+			border-bottom: 1px solid #ccc;
+
 			th{
 				height: 50px;
 				line-height: 50px;
-				background: #0082e5;
+				background: #F7F7F7;
 				width: 25%;
-				border: 1px solid #ccc;
+				text-align: left;
+				padding-left: 10px;
 			}
 		}
 		tbody{
 			td{
 				height: 40px;
 				line-height: 40px;
-				background: #ccc;
+				background: #fff;
 				border: 1px solid #cccs;
 			}
 		}
@@ -44,27 +47,71 @@ a{
 		height: 50px;
 		width: 200px;
 		#creat-room{
-			background: #0082e5;
+			background: #e78f08;
 			color: #fff;
 			padding: 10px 20px;
 			float: right;
+			border-radius: 3px;
 		}
 	}
 
 	.room-container{
-		.enter-code{
-			width: 500px;
-			height: 300px;
+		.room-info{
+			&:after{
+				content: ' ';
+				visibility: hidden;
+				line-height: 0;
+				height: 0;
+				clear: both;
+			}
+			.column{
+				border-right: 1px solid #333;
+				border-left: 1px solid #333;
+				margin-right: -4px;
+				margin-left: -1px;
+				padding: 0 56px;
+				display: inline-block;
+			}
+		}
+		.room-desc{
+			.desc{
+				font-weight: normal;
+				word-break: break-all;
+			}
+		}
+
+		.enter-code {
+			margin-top: 30px;
+			width: 1024px;
+			height: 500px;
 		}
 	}
 }
 
 .creat-form{
 	.item{
+		margin-bottom: 20px;
 		height: 36px;
 		line-height: 36px;
+		.title{
+			width: 150px;
+			display: inline-block;
+		}
 		.input-value{
-			padding: 5px;
+			height: 32px;
+			line-height: 32px;
+			width: 350px;
+			display: inline-block;
+			margin-left: -4px;
+		}
+		.desc-title{
+			vertical-align: top;
+		}
+		.desc{
+			height: 200px;
+			width: 350px;
+			resize: none;
+			overflow-y: auto;
 		}
 	}
 }

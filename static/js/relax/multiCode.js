@@ -8,7 +8,7 @@ require.config({
 		'backbone': '/lib/backbone/backbone'
 	}
 });
-require(['require', 'jquery','io', 'underscore', 'backbone', 'jqueryui'], function(require, $, io, _, Backbone){
+require(['require', 'jquery','io', 'underscore', 'backbone','jqueryui'], function(require, $, io, _, Backbone){
 	var ListView = Backbone.View.extend({
 		render: function(){
 			this.$el.html(_.template($('#roomTable').html())());
@@ -22,7 +22,15 @@ require(['require', 'jquery','io', 'underscore', 'backbone', 'jqueryui'], functi
 				_html = '';
 				for(var key in data){
 					value = data[key];
+					value.descTitle = value.desc;
+					if (value.desc && value.desc.length > 20){
+						value.desc = value.desc.slice(0, 20);
+					}
+
 					_html += _.template($('#roomItem').html())(value);
+				}
+				if (_html.length == 0){
+					_html = '<tr><td colspan=4>暂无房间...</td></tr>'
 				}
 				$('#container .room-table tbody').html( _html );
 			});
@@ -34,6 +42,8 @@ require(['require', 'jquery','io', 'underscore', 'backbone', 'jqueryui'], functi
 			var v = this;
 			$($('#creat-room-template').html()).dialog({
 				modal: true,
+				width: 600,
+				height:500,
 				buttons: [
 					{
 						text: 'OK',
@@ -68,7 +78,25 @@ require(['require', 'jquery','io', 'underscore', 'backbone', 'jqueryui'], functi
 					document.write('暂无改房间');
 					return
 				}
-				v.$el.append(_.template( $('#single-room-template').html() )(data) );
+				v.$el.append(_.template( $('#single-room-template').html() )(data, null) );
+
+
+    			ace.require("ace/ext/language_tools");
+			    var editor = v.editor = ace.edit($('#enter-code', v.$el)[0]);
+			    editor.session.setMode("ace/mode/javascript");
+			    editor.setTheme("ace/theme/tomorrow_night_bright");
+			    // enable autocompletion and snippets
+			    editor.setOptions({
+			        enableBasicAutocompletion: true,
+			        enableSnippets: true,
+			        enableLiveAutocompletion: true
+			    });
+			    editor.$blockScrolling = Infinity
+
+			    socket.on('enterCode', function (data) {
+					editor.setValue(data)
+				});
+
 
 				socket.emit('getRoomNumber', roomID, function(data){
 					$('.person-number').html(data)
@@ -83,37 +111,12 @@ require(['require', 'jquery','io', 'underscore', 'backbone', 'jqueryui'], functi
 			var v = this,
 				m = v.model,
 				roomID = m.get('roomID'),
-				$target = $(ev.target),
+				value = v.editor.getValue(),
 				socket = window.socket;
-			socket.emit('enterCode', $target.val(), roomID)
+			socket.emit('enterCode', value, roomID)
 		}
 
 	});
-
-
-
-
-
-
-	// socket.emit('joinGroup', 'react0')
-	// socket.emit('joinGroup', 'react1')
-	// socket.emit('leaveGroup', 'last')
-
-	// if(window.navigator.userAgent.indexOf('Safari') > -1){
-	// 	socket.emit('leaveGroup', 'react1')
-	// 	socket.emit('leaveGroup', 'last')
-	// }
-	
-	// socket.on('news', function (data) {
-	// 	socket.emit('getRoomNumber', 'last') 
-	// });
-
-	// //event attach
-	// $('#creat-room').bind('click', function(e){
-	// 	$('#creat-room-template').dialog()
-	// });
-
-	
 
 	var Router = Backbone.Router.extend({
 		routes: {
@@ -135,9 +138,8 @@ require(['require', 'jquery','io', 'underscore', 'backbone', 'jqueryui'], functi
 	});
 
 	var socket = window.socket = window.socket || io.connect('/code');
-	socket.on('enterCode', function (data) {
-		$('.enter-code').val(data)
-	});
+	//var socket = window.socket = window.socket || io.connect('http://localhost:8080/code');
+	
 
 	socket.on('setRoomNumber', function(data){
 		$('.person-number').html(data)

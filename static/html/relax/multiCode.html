@@ -3,6 +3,11 @@
 <head>
 	<title>Socket.IO</title>
 	<script src="/lib/requirejs/require.js" type="text/javascript" charset="utf-8" data-main="/js/relax/multiCode.js"></script>
+	<script type="text/javascript" src="/lib/ace/src/ace.js"></script>
+	<script type="text/javascript" src="/lib/ace/src/ext-language_tools.js"></script>
+
+
+
 	<link rel="stylesheet" type="text/css" href="/css/relax/multiCode.css">
 	<link rel="stylesheet" type="text/css" href="/lib/jQueryUI/jquery-ui.min.css">
 </head>
@@ -24,7 +29,7 @@
 					<th>房间名称</th>
 					<th>标题</th>
 					<th>简介</th>
-					<th>操作</th>
+					<th class="operate-list">操作</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -40,10 +45,12 @@
 
 	<script type="text/tempalte" id="roomItem">
 		<tr id="<%=id%>">
-			<td ><%=name%></td>
-			<td><%=title%></td>
-			<td><%=desc%></td>
-			<td class="operate-list"><a href="#room/<%=id%>" data-name="<%=id%>" class="come-in">in</a></td>
+			<td ><%-name%></td>
+			<td><%-title%></td>
+			<td title="<%-descTitle%>">
+				<%-desc%>
+			</td>
+			<td class="operate-list"><a href="#room/<%=id%>" data-name="<%=id%>" class="come-in"> join in </a></td>
 		</tr>
 	</script>
 
@@ -60,8 +67,8 @@
 				</div>
 
 				<div class="item">
-					<label class="title">描述</label>
-					<input class="input-value desc" id="desc" name="desc"/>
+					<label class="title desc-title">描述</label>
+					<textarea class="input-value desc" id="desc" name="desc"></textarea>
 				</div>
 
 			</form>
@@ -69,14 +76,19 @@
 
 	<script type="text/tempalte" id="single-room-template">
 		<div class="room-container">
-			<h3>房间ID: <%=id%></h3>
-			<h3>房间名称: <%=name%></h3>
-			<h3>房间标题: <%=title%></h3>
-			<h3>房间描述 :<%=desc%></h3>
+			<div class="room-info">
+				<div class="column"><h3>房间ID: <%=id%></h3></div>
+				<div class="column"><h3>房间名称: <%=name%></h3></div>
+				<div class="column"><h3>房间标题: <%=title%></h3></div>
+				<div class="column"><h3>房间人数：<span class="person-number"></span>人</h3></div>
+			</div>
+			<div class="room-desc"><h3>房间描述 :<p class="desc"><%=desc%></p></h3></div>
 
-			<h3>房间人数：<span class="person-number"></span>人</h3>
 
-			<textarea class="enter-code"></textarea>
+			
+
+			
+			<div class="enter-code" id="enter-code"></div>
 
 
 		</div>
