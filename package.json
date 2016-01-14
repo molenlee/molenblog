@@ -30,7 +30,8 @@
     "koa-redis-pool":"0.3.1",
     "monk": "1.0.1",
     "co-monk": "1.0.0",
-    "socket.io": "1.3.7"
+    "socket.io": "1.3.7",
+    "commander": "2.9.0"
   },
   "devDependencies":{
     "supervisor": "0.9.1",

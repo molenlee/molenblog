@@ -131,7 +131,7 @@ require(['require', 'jquery','io', 'underscore', 'backbone', 'jqueryui'], functi
 		}
 	});
 
-	var socket = window.socket = window.socket || io.connect('http://localhost:8080/code');
+	var socket = window.socket = window.socket || io.connect('/code');
 	socket.on('enterCode', function (data) {
 		$('.enter-code').val(data)
 	});

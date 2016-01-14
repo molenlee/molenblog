@@ -1,5 +1,18 @@
 var koa = require('koa');
-var http = require('http')
+var http = require('http');
+var program = require('commander');
+
+
+program
+  .version('0.0.1')
+  .option('-d, --develop', 'develop mode')
+  .parse(process.argv);
+
+var port = 80;
+
+if (program.develop){
+	port = 8080
+}
 
 //路由
 var route = require('./feature/route');
@@ -9,7 +22,6 @@ var staticServer = require('koa-file-server');
 var mywebsocket = require('./feature/socket')
 
 var app = koa();
-port = 80;
 //打印路径
 app.use(function *(next){
   var start = new Date();
