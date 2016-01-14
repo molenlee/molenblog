@@ -44,8 +44,8 @@ require(['require', 'jquery','io', 'underscore', 'backbone', 'jqueryui'], functi
 								value = data[key];
 								o[value.name] = value.value;
 							}
-							socket.emit('creatRoom', o, function(){
-								v.render();
+							socket.emit('creatRoom', o, function(data){
+								window.router.navigate('room/' + data.id ,{trigger: true})
 							});
 							$( this ).dialog( "close" );
 						}
@@ -64,7 +64,10 @@ require(['require', 'jquery','io', 'underscore', 'backbone', 'jqueryui'], functi
 				roomID = m.get('roomID'),
 				socket = window.socket;
 			socket.emit('joinRoom', roomID, function(data){
-				console.info(data)
+				if (!data){
+					document.write('暂无改房间');
+					return
+				}
 				v.$el.append(_.template( $('#single-room-template').html() )(data) );
 
 				socket.emit('getRoomNumber', roomID, function(data){

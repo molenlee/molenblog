@@ -48,7 +48,7 @@ module.exports = function(server){
 			var id = +new Date() + '' ;
 			data['id'] = id
 			rooms[id] = data;
-			fn(rooms);
+			fn(data);
 		});
 
 

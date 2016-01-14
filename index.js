@@ -5,13 +5,13 @@ var program = require('commander');
 
 program
   .version('0.0.1')
-  .option('-d, --develop', 'develop mode')
+  .option('-f, --formal', 'formal mode')
   .parse(process.argv);
 
-var port = 80;
+var port = 8080;
 
-if (program.develop){
-	port = 8080
+if (program.formal){
+	port = 80
 }
 
 //路由
