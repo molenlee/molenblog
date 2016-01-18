@@ -163,8 +163,8 @@ require(['require', 'jquery','io', 'underscore', 'backbone','jqueryui'], functio
 		}
 	});
 
-	//var socket = window.socket = window.socket || io.connect('/code');
-	var socket = window.socket = window.socket || io.connect('http://localhost:8080/code');
+	var socket = window.socket = window.socket || io.connect('/code');
+	//var socket = window.socket = window.socket || io.connect('http://localhost:8080/code');
 	window.deltas = new Array();
 	window.timeoutProcess = null;
 
