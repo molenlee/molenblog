@@ -37,7 +37,7 @@ module.exports = function(server){
 						socket.broadcast.to(key).emit('setRoomNumber', res.length);
 					}
 				}
-			}, 1000)
+			}, 15000)
 		})
 
 

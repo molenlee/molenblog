@@ -75,7 +75,7 @@ require(['require', 'jquery','io', 'underscore', 'backbone','jqueryui'], functio
 				socket = window.socket;
 			socket.emit('joinRoom', roomID, function(data){
 				if (!data){
-					document.write('暂无改房间');
+					document.write('暂无该房间');
 					return
 				}
 				v.$el.append(_.template( $('#single-room-template').html() )(data, null) );
