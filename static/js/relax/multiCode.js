@@ -80,7 +80,6 @@ require(['require', 'jquery','io', 'underscore', 'backbone','jqueryui'], functio
 				}
 				v.$el.append(_.template( $('#single-room-template').html() )(data, null) );
 
-
     			ace.require("ace/ext/language_tools");
 			    var editor = v.editor = ace.edit($('#enter-code', v.$el)[0]);
 			    editor.session.setMode("ace/mode/javascript");
@@ -92,9 +91,36 @@ require(['require', 'jquery','io', 'underscore', 'backbone','jqueryui'], functio
 			        enableLiveAutocompletion: true
 			    });
 			    editor.$blockScrolling = Infinity
+			    console.info('back')
+			    console.info(data)
+				editor.getSession().getDocument().applyDeltas(data['deltas']);
+				socket.triggerChange = true;
+
+			    editor.on('change', function(ev, obj){
+			    	if (!socket.triggerChange){
+			    		return
+			    	}
+
+			    	deltas = window.deltas;
+			    	deltas.push(ev);
+
+			    	if (window.timeoutProcess){
+			    		return;
+			    	}
+			    	else{
+			    		window.timeoutProcess = setTimeout(function(){
+				    		socket.emit('enterCode', deltas, roomID);
+				    		window.timeoutProcess = null;
+				    		deltas.length = 0;
+				    	},1000);
+			    	}
+			    });
+
 
 			    socket.on('enterCode', function (data) {
-					editor.setValue(data)
+			    	socket.triggerChange = false;
+			    	editor.getSession().getDocument().applyDeltas(data);
+			    	socket.triggerChange = true;
 				});
 
 
@@ -105,7 +131,7 @@ require(['require', 'jquery','io', 'underscore', 'backbone','jqueryui'], functio
 			return v;
 		},
 		events: {
-			'keyup .enter-code': 'enterCode'
+			'keyup1 .enter-code': 'enterCode'
 		},
 		enterCode: function(ev){
 			var v = this,
@@ -137,9 +163,11 @@ require(['require', 'jquery','io', 'underscore', 'backbone','jqueryui'], functio
 		}
 	});
 
-	var socket = window.socket = window.socket || io.connect('/code');
-	//var socket = window.socket = window.socket || io.connect('http://localhost:8080/code');
-	
+	//var socket = window.socket = window.socket || io.connect('/code');
+	var socket = window.socket = window.socket || io.connect('http://localhost:8080/code');
+	window.deltas = new Array();
+	window.timeoutProcess = null;
+
 
 	socket.on('setRoomNumber', function(data){
 		$('.person-number').html(data)

@@ -11,12 +11,13 @@ module.exports = function(server){
 	var code = io.of(nsp);
 
 	rooms = {
-		// '0001': {
-		// 	'id': '0001',
-		// 	'name': '测试名称',
-		// 	'title': '测试标题',
-		// 	'desc' :'测试描述'
-		// }
+		'0001': {
+			'id': '0001',
+			'name': '测试名称',
+			'title': '测试标题',
+			'desc' :'测试描述',
+			'deltas': []
+		}
 	};
 
 
@@ -46,7 +47,8 @@ module.exports = function(server){
 
 		socket.on('creatRoom', function(data, fn){
 			var id = +new Date() + '' ;
-			data['id'] = id
+			data['id'] = id;
+			data['deltas'] = []
 			rooms[id] = data;
 			fn(data);
 		});
@@ -55,15 +57,11 @@ module.exports = function(server){
 
 		socket.on('joinRoom', function(data, fn){
 			for(var key in rooms){
-				console.info('1')
 				if (key == data){
-					console.info('2')
 					continue;
 				}
-				console.info(3)
 				void function(key){
 					socket.leave(key, function(){
-						console.info('need check key is ' + key)
 						checkSingleRomm(key);
 						socket.broadcast.to(key).emit('setRoomNumber', findClientsSocket(key, nsp).length);
 					});
@@ -79,6 +77,7 @@ module.exports = function(server){
 
 		socket.on('enterCode', function(data, roomID){
 			// io.to(roomID).emit('enterCode', data);
+			rooms[roomID]['deltas'] =  rooms[roomID]['deltas'].concat(data); 
 			socket.broadcast.to(roomID).emit('enterCode', data);
 			// io.sockets.in(roomID).emit('enterCode', data);
 		});
@@ -99,7 +98,6 @@ module.exports = function(server){
 		});
 
 		function checkSingleRomm(roomID){
-			console.info('roomID is ' + roomID)
 			var res = findClientsSocket(roomID, nsp);
 			if (res.length == 0){
 				delete rooms[roomID];
