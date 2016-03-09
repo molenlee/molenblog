@@ -8,11 +8,7 @@ program
   .option('-f, --formal', 'formal mode')
   .parse(process.argv);
 
-var port = 8080;
-
-if (program.formal){
-	port = 80
-}
+var port = program.formal ? 80 : 8080;
 
 //路由
 var route = require('./feature/route');
@@ -45,6 +41,9 @@ mywebsocket(server);
 
 
 server.listen(port);
+
+// var webRTC = require('webrtc.io').listen(server);
+
 
 console.info("server is running, listen to " + port)
 
