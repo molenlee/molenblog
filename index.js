@@ -8,7 +8,7 @@ program
   .option('-f, --formal', 'formal mode')
   .parse(process.argv);
 
-var port = program.formal ? 80 : 8080;
+var port = program.formal ? 8000 : 8080;
 
 //路由
 var route = require('./feature/route');
